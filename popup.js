@@ -1,22 +1,29 @@
-document.getElementById('toggle-cursor-hider').addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.sync.get(['cursorHiderEnabled'], (result) => {
-        const newStatus = !result.cursorHiderEnabled;
-        chrome.storage.sync.set({ cursorHiderEnabled: newStatus }, () => {
-            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-                chrome.scripting.executeScript({
-                    target: { tabId: tabs[0].id },
-                    func: setCursorHiderStatus,
-                    args: [newStatus]
-                });
+        const isEnabled = result.cursorHiderEnabled;
+        document.getElementById('toggle-cursor-hider').checked = isEnabled;
+    });
+});
+
+document.getElementById('toggle-cursor-hider').addEventListener('change', (event) => {
+    const newStatus = event.target.checked;
+    chrome.storage.sync.set({ cursorHiderEnabled: newStatus }, () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.scripting.executeScript({
+                target: { tabId: tabs[0].id },
+                func: setCursorHiderStatus,
+                args: [newStatus]
             });
         });
     });
 });
 
 function setCursorHiderStatus(enabled) {
-    showCursor();
-    clearTimeout(window.hideCursorTimeout);
+     // always show and clear timeout just to reset it so we can at least see the mouse once
+     clearTimeout(window.hideCursorTimeout);
 
+     showCursor();
+ 
     if (enabled) {
         document.addEventListener('mousemove', handleMouseMove);
     } else {

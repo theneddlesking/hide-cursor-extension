@@ -18,7 +18,7 @@ function handleMouseMove() {
     }, 1000);
 }
 
-chrome.storage.sync.get(['cursorHiderEnabled'], (result) => {
+chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
     // always show and clear timeout just to reset it so we can at least see the mouse once
     clearTimeout(window.hideCursorTimeout);
 

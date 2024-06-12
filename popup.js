@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    chrome.storage.sync.get(['cursorHiderEnabled'], (result) => {
+    chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
         const isEnabled = result.cursorHiderEnabled;
         document.getElementById('toggle-cursor-hider').checked = isEnabled;
     });
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('toggle-cursor-hider').addEventListener('change', (event) => {
     const newStatus = event.target.checked;
-    chrome.storage.sync.set({ cursorHiderEnabled: newStatus }, () => {
+    chrome.storage.local.set({ cursorHiderEnabled: newStatus }, () => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             chrome.scripting.executeScript({
                 target: { tabId: tabs[0].id },

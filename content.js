@@ -7,10 +7,12 @@ function showCursor() {
 }
 
 function handleMouseMove() {
+    // when we move the mouse show the cursor if it's hidden and clear the timeout
     if (document.body.style.cursor === 'none') {
         showCursor();
     }
 
+    // restart the 1 second timeout
     clearTimeout(window.hideCursorTimeout);
 
     startCursorHideTimeout();
@@ -20,6 +22,7 @@ chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
     setCursorHiderStatus(result.cursorHiderEnabled);
 });
 
+// hides the cursor in 1 second
 function startCursorHideTimeout() {
     window.hideCursorTimeout = setTimeout(() => {
         hideCursor();
@@ -52,6 +55,7 @@ setInterval(() => {
             return;
         }
 
+        // binds the result to window so we can compare it later
         window.cursorHiderEnabled = result.cursorHiderEnabled;
 
         setCursorHiderStatus(result.cursorHiderEnabled);

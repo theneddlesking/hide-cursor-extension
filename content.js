@@ -19,42 +19,35 @@ function handleMouseMove() {
 }
 
 chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
+    setCursorHiderStatus(result.cursorHiderEnabled);
+});
+
+function setCursorHiderStatus(enabled) {
     // always show and clear timeout just to reset it so we can at least see the mouse once
     clearTimeout(window.hideCursorTimeout);
 
     showCursor();
 
-    if (result.cursorHiderEnabled) {
+    if (enabled) {
         document.addEventListener('mousemove', window.handleMouseMove);
     } else {
         document.removeEventListener('mousemove', window.handleMouseMove);
     }
-});
+}
 
 // force update with poll
 
 setInterval(() => {
     chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
+        // don't do anything if the value hasn't changed
 
-        // don't update if it's the same
         if (result.cursorHiderEnabled === window.cursorHiderEnabled) {
             return;
         }
 
         window.cursorHiderEnabled = result.cursorHiderEnabled;
 
-        // always show and clear timeout just to reset it so we can at least see the mouse once
-
-        clearTimeout(window.hideCursorTimeout);
-
-        showCursor();
-
-
-        if (result.cursorHiderEnabled) {
-            document.addEventListener('mousemove', window.handleMouseMove);
-        } else {
-            document.removeEventListener('mousemove', window.handleMouseMove);
-        }
+        setCursorHiderStatus(result.cursorHiderEnabled);
     });
 }
 , 1000);

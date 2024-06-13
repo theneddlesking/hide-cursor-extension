@@ -13,14 +13,18 @@ function handleMouseMove() {
 
     clearTimeout(window.hideCursorTimeout);
 
-    window.hideCursorTimeout = setTimeout(() => {
-        hideCursor();
-    }, 1000);
+    startCursorHideTimeout();
 }
 
 chrome.storage.local.get(['cursorHiderEnabled'], (result) => {
     setCursorHiderStatus(result.cursorHiderEnabled);
 });
+
+function startCursorHideTimeout() {
+    window.hideCursorTimeout = setTimeout(() => {
+        hideCursor();
+    }, 1000);
+}
 
 function setCursorHiderStatus(enabled) {
     // always show and clear timeout just to reset it so we can at least see the mouse once
@@ -30,6 +34,9 @@ function setCursorHiderStatus(enabled) {
 
     if (enabled) {
         document.addEventListener('mousemove', window.handleMouseMove);
+
+        // immediately hide the cursor timeout to hide the cursor if it doesn't move at all
+        startCursorHideTimeout();
     } else {
         document.removeEventListener('mousemove', window.handleMouseMove);
     }

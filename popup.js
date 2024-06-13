@@ -26,6 +26,9 @@ function setCursorHiderStatus(enabled) {
  
     if (enabled) {
         document.addEventListener('mousemove', window.handleMouseMove);
+
+        // immediately hide the cursor timeout to hide the cursor if it doesn't move at all
+        startCursorHideTimeout();
     } else {
         document.removeEventListener('mousemove', window.handleMouseMove);
     }

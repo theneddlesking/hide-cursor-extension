@@ -25,8 +25,8 @@ function setCursorHiderStatus(enabled) {
      showCursor();
  
     if (enabled) {
-        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mousemove', window.handleMouseMove);
     } else {
-        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mousemove', window.handleMouseMove);
     }
 }

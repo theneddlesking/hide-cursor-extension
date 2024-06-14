@@ -129,6 +129,24 @@ document.body.appendChild(dialog);
 // make dialog low opacity
 dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
 
+// add a button to the div to check if its clickable
+const button = document.createElement('button');
+
+button.style.position = 'absolute';
+button.style.top = '50%';
+button.style.left = '50%';
+button.style.transform = 'translate(-50%, -50%)';
+
+button.textContent = 'Click me';
+
+cursorHiderDiv.appendChild(button);
+
+// add a click event to the button
+button.addEventListener('click', () => {
+    // set content to random number
+    button.textContent = Math.random();
+});
+
 // open the dialog
 dialog.showModal();
 

@@ -5,8 +5,13 @@ function hideCursor() {
 function toggleCusor(hide) {
     cursor_str = hide ? 'none' : 'auto';
 
-    // hide the div if we are showing the cursor
-    cursorHiderDiv.style.display = hide ? 'block' : 'none';
+    // hide the dialog if we are showing the cursor
+    if (!hide) {
+        dialog.close();
+    }
+    else {
+        dialog.showModal();
+    }
 
     document.body.style.cursor = cursor_str;
     document.querySelectorAll('*').forEach(element => {
@@ -90,25 +95,42 @@ setInterval(() => {
 
 // new idea for cursor hider
 // we overlay a div over the entire screen to intercept mouse events
+// use a dialog because it renders on the top layer
 
-// onload
-let cursorHiderDiv = document.createElement('div');
+// create the div and dialog
+
+const dialog = document.createElement('dialog');
+
+dialog.style.position = 'fixed';
+dialog.style.top = '0';
+dialog.style.left = '0';
+dialog.style.width = '100%';
+dialog.style.height = '100%';
+dialog.style.zIndex = '2147483647'; // max z-index
+
+const cursorHiderDiv = document.createElement('div');
 
 cursorHiderDiv.style.position = 'fixed';
-
 cursorHiderDiv.style.top = '0';
 cursorHiderDiv.style.left = '0';
-
 cursorHiderDiv.style.width = '100%';
 cursorHiderDiv.style.height = '100%';
+cursorHiderDiv.style.zIndex = '2147483647'; // max z-index
 
-cursorHiderDiv.style.zIndex = '100';
-
-// set background color for debug
+// for debugging make it red
 cursorHiderDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
 
-// insert
-document.body.appendChild(cursorHiderDiv);
+// add the div to the dialog
+dialog.appendChild(cursorHiderDiv);
+
+// add the dialog to the body
+document.body.appendChild(dialog);
+
+// make dialog low opacity
+dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+
+// open the dialog
+dialog.showModal();
 
 window.hideCursor = hideCursor;
 window.showCursor = showCursor;

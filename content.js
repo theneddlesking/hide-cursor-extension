@@ -1,9 +1,16 @@
 function hideCursor() {
     document.body.style.cursor = 'none';
+    document.querySelectorAll('*').forEach(element => {
+        element.style.cursor = 'none';
+    });
 }
+
 
 function showCursor() {
     document.body.style.cursor = 'auto';
+    document.querySelectorAll('*').forEach(element => {
+        element.style.cursor = 'auto';
+    });
 }
 
 function handleMouseMove() {

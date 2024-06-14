@@ -5,6 +5,8 @@ function hideCursor() {
 function toggleCusor(hide) {
     cursor_str = hide ? 'none' : 'auto';
 
+    // hide the div if we are showing the cursor
+    cursorHiderDiv.style.display = hide ? 'block' : 'none';
 
     document.body.style.cursor = cursor_str;
     document.querySelectorAll('*').forEach(element => {

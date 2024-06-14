@@ -1,16 +1,32 @@
 function hideCursor() {
-    document.body.style.cursor = 'none';
+    toggleCusor(true);
+}
+
+function toggleCusor(hide) {
+    cursor_str = hide ? 'none' : 'auto';
+
+
+    document.body.style.cursor = cursor_str;
     document.querySelectorAll('*').forEach(element => {
-        element.style.cursor = 'none';
+        element.style.cursor = cursor_str;
+    });
+
+     // include iframes
+     document.querySelectorAll('iframe').forEach(iframe => {
+        try {
+            iframe.contentWindow.document.body.style.cursor = cursor_str;
+            iframe.contentWindow.document.querySelectorAll('*').forEach(element => {
+                element.style.cursor = cursor_str;
+            });
+        } catch (e) {
+            // security errors
+            console.log(e);
+        }
     });
 }
 
-
 function showCursor() {
-    document.body.style.cursor = 'auto';
-    document.querySelectorAll('*').forEach(element => {
-        element.style.cursor = 'auto';
-    });
+    toggleCusor(false);
 }
 
 function handleMouseMove() {

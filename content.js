@@ -86,6 +86,28 @@ setInterval(() => {
 }
 , 1000);
 
+// new idea for cursor hider
+// we overlay a div over the entire screen to intercept mouse events
+
+// onload
+let cursorHiderDiv = document.createElement('div');
+
+cursorHiderDiv.style.position = 'fixed';
+
+cursorHiderDiv.style.top = '0';
+cursorHiderDiv.style.left = '0';
+
+cursorHiderDiv.style.width = '100%';
+cursorHiderDiv.style.height = '100%';
+
+cursorHiderDiv.style.zIndex = '100';
+
+// set background color for debug
+cursorHiderDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+
+// insert
+document.body.appendChild(cursorHiderDiv);
+
 window.hideCursor = hideCursor;
 window.showCursor = showCursor;
 window.handleMouseMove = handleMouseMove;

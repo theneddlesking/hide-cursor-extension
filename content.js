@@ -6,11 +6,11 @@ const cursor_str_map = {}
 
 // helpers just for readability
 function showCursor() {
-    toggleCusor(false);
+    toggleCursor(false);
 }
 
 function hideCursor() {
-    toggleCusor(true);
+    toggleCursor(true);
 }
 
 function hashElement(element) {
@@ -53,7 +53,7 @@ function getAllElementsForCursorInteractions() {
     return allElements;
 }
 
-function toggleCusor(hide) {
+function toggleCursor(hide) {
     // sets the cursor styling string for the element
     const cursorFunc = (element) => element.style.cursor = getCursorStrForElement(element, hide);
 
@@ -65,12 +65,6 @@ function toggleCusor(hide) {
         document.exitPointerLock();
     }
     else {
-        // init the elements if they don't exist yet 
-        // we do this now to ensure they only get added if the user wants to hide the cursor for this page
-        if (!document.getElementById('cursor-hider-dialog')) {
-            init();
-        }
-
         dialog.showModal();
 
         // show the button so that we can click it to hide the cursor using pointer lock
@@ -82,14 +76,14 @@ function toggleCusor(hide) {
 }
 
 function handleMouseMove(event) {
+    // move the button where the mouse is
+    button.style.top = `${event.clientY}px`;
+    button.style.left = `${event.clientX}px`;
+
     // when we move the mouse show the cursor if it's hidden and clear the timeout
     if (document.body.style.cursor === 'none') {
         showCursor();
     }
-
-    // move the button where the mouse is
-    button.style.top = `${event.clientY}px`;
-    button.style.left = `${event.clientX}px`;
 
     // restart the 1 second timeout
     clearTimeout(window.hideCursorTimeout);
@@ -117,6 +111,12 @@ function startCursorHideTimeout() {
 function setCursorHiderStatus(enabled) {
     // always show and clear timeout just to reset it so we can at least see the mouse once
     clearTimeout(window.hideCursorTimeout);
+
+    // init the elements if they don't exist yet 
+    // we do this now to ensure they only get added if the user wants to hide the cursor for this page
+    if (!document.getElementById('cursor-hider-dialog')) {
+        init();
+    }
 
     showCursor();
 
@@ -146,6 +146,9 @@ setInterval(() => {
     });
 }
 , 1000);
+
+// start the listener immediately because we don't want to wait for the first interval before tracking the cursor
+document.addEventListener('mousemove', window.handleMouseMove);
 
 function init() {
     // get the default cursor for each element

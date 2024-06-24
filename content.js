@@ -72,7 +72,9 @@ function toggleCursor(hide) {
     }
 
     // set the cursor for all elements
-    getAllElementsForCursorInteractions().forEach(cursorFunc);
+    const allElements = getAllElementsForCursorInteractions();
+
+    allElements.forEach(cursorFunc);
 }
 
 function handleMouseMove(event) {

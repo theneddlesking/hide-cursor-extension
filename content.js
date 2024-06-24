@@ -13,19 +13,22 @@ function hideCursor() {
     toggleCusor(true);
 }
 
+function hashElement(element) {
+    return element.tagName + element.id + element.className;
+}
+
 function getDefaultCursorOfElement(element) {
-    const hash = element.tagName + element.id + element.className;
-    return cursor_str_map[hash];
+    return cursor_str_map[hashElement(element)];
 }
 
 function getCursorStrForElement(element, hide) {
     if (hide) {
         return 'none';
     }
-    return 'auto';
 
+    return 'auto';
     // defaults as auto if it doesn't exist
-    return getDefaultCursorOfElement(element) || 'auto';
+    // return getDefaultCursorOfElement(element) || 'auto';
 }
 
 function getAllElementsForCursorInteractions() {
@@ -34,13 +37,17 @@ function getAllElementsForCursorInteractions() {
     // all elements
     allElements.concat(document.querySelectorAll('*'));
 
+    // specifically add the body and html elements
+    allElements.push(document.body);
+    allElements.push(document.documentElement);
+
     // include iframes
     document.querySelectorAll('iframe').forEach(iframe => {
         try {
             allElements.concat(iframe.contentWindow.document.querySelectorAll('*'));
         } catch (e) {
             // security errors for if the iframe is from a different origin
-            console.log(e);
+            // console.log(e);
         }
     });
 
@@ -50,9 +57,6 @@ function getAllElementsForCursorInteractions() {
 function toggleCusor(hide) {
     // sets the cursor styling string for the element
     const cursorFunc = (element) => element.style.cursor = getCursorStrForElement(element, hide);
-
-    console.log("update", hide)
-
 
     // hide the dialog if we are showing the cursor
     if (!hide) {
@@ -150,8 +154,7 @@ function init() {
 
     // save default cursor for each element
     allElements.forEach(element => {
-        const hash = element.tagName + element.id + element.className;
-        cursor_str_map[hash] = element.style.cursor;
+        cursor_str_map[hashElement(element)] = element.style.cursor;
     });
 
     // create the div and dialog so that the pointer lock button appears at the top of the page always

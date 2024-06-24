@@ -8,9 +8,12 @@ function toggleCusor(hide) {
     // hide the dialog if we are showing the cursor
     if (!hide) {
         dialog.close();
+        dialog.style.display = 'none';
+
     }
     else {
         dialog.showModal();
+        dialog.style.display = 'block';
     }
 
     document.body.style.cursor = cursor_str;
@@ -34,13 +37,26 @@ function toggleCusor(hide) {
 
 function showCursor() {
     toggleCusor(false);
+
+    // release the pointer lock
+    document.exitPointerLock();
+
+    // show the button
+    button.style.display = 'block';
+
+    // show the dialog
+    dialog.showModal();
 }
 
-function handleMouseMove() {
+function handleMouseMove(event) {
     // when we move the mouse show the cursor if it's hidden and clear the timeout
     if (document.body.style.cursor === 'none') {
         showCursor();
     }
+
+    // move the button where the mouse is
+    button.style.top = `${event.clientY}px`;
+    button.style.left = `${event.clientX}px`;
 
     // restart the 1 second timeout
     clearTimeout(window.hideCursorTimeout);
@@ -117,34 +133,38 @@ cursorHiderDiv.style.width = '100%';
 cursorHiderDiv.style.height = '100%';
 cursorHiderDiv.style.zIndex = '2147483647'; // max z-index
 
-// for debugging make it red
-cursorHiderDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
-
 // add the div to the dialog
 dialog.appendChild(cursorHiderDiv);
 
 // add the dialog to the body
 document.body.appendChild(dialog);
 
-// make dialog low opacity
-dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+// make dialog red
+dialog.style.backgroundColor = 'rgba(255, 0, 0, 0.5)'
 
 // add a button to the div to check if its clickable
 const button = document.createElement('button');
 
 button.style.position = 'absolute';
-button.style.top = '50%';
-button.style.left = '50%';
 button.style.transform = 'translate(-50%, -50%)';
 
-button.textContent = 'Click me';
+button.textContent = 'Hide Cursor';
 
 cursorHiderDiv.appendChild(button);
 
 // add a click event to the button
-button.addEventListener('click', () => {
-    // set content to random number
-    button.textContent = Math.random();
+button.addEventListener('click', (event) => {
+    // hide the button
+    button.style.display = 'none';
+
+    // lock the cursor to the element
+    button.requestPointerLock();
+
+    // hide the dialog
+    dialog.close();
+
+    // hide the entire dialog as display none
+    dialog.style.display = 'none';
 });
 
 // open the dialog

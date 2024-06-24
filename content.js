@@ -26,9 +26,8 @@ function getCursorStrForElement(element, hide) {
         return 'none';
     }
 
-    return 'auto';
     // defaults as auto if it doesn't exist
-    // return getDefaultCursorOfElement(element) || 'auto';
+    return getDefaultCursorOfElement(element) || 'auto';
 }
 
 function getAllElementsForCursorInteractions() {

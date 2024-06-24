@@ -18,7 +18,7 @@ document.getElementById('toggle-cursor-hider').addEventListener('change', (event
     });
 });
 
-function setCursorHiderStatus(enabled) {
+function setCursorHiderStatus(enabled) {    
      // always show and clear timeout just to reset it so we can at least see the mouse once
      clearTimeout(window.hideCursorTimeout);
 

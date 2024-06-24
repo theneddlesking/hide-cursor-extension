@@ -15,5 +15,5 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "description": "Hides your cursor after 1 second of inactivity. Synced across all tabs, toggleable via a popup."
+  "description": "Hides your cursor after 1 second of inactivity. Synced across all tabs, toggleable via a popup. When activated a screen will popup for you to hide the cursor. Press ESCAPE to make the cursor reappear."
 }

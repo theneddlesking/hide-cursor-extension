@@ -116,8 +116,8 @@ function setCursorHiderStatus(enabled) {
 
     // init the elements if they don't exist yet 
     // we do this now to ensure they only get added if the user wants to hide the cursor for this page
-    if (!document.getElementById('cursor-hider-dialog')) {
-        init();
+    if (enabled && !document.getElementById('cursor-hider-dialog')) {
+        initElements();
     }
 
     showCursor();
@@ -152,7 +152,7 @@ setInterval(() => {
 // start the listener immediately because we don't want to wait for the first interval before tracking the cursor
 document.addEventListener('mousemove', window.handleMouseMove);
 
-function init() {
+function initElements() {
     // get the default cursor for each element
     const allElements = getAllElementsForCursorInteractions();
 
